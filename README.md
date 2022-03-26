@@ -1,4 +1,3 @@
-# docker-qemu-arm
 
 **Docker on Termux [in a VM]**
 
@@ -13,18 +12,19 @@ Recommended to use SSH or external keyboard to execute the following commands un
     
     ```
     
-- Download Alpine Linux 3.12 (virt optimized) ISO
+- Download Alpine Linux 3.15.2 (virt optimized) ISO 
     
     ```
-     mkdir alpine && cd $_
-     wget https://dl-cdn.alpinelinux.org/alpine/v3.15/releases/x86_64/alpine-virt-3.15.2-x86_64.iso
+     - mkdir alpine
+     - cd alpine
+     - wget https://dl-cdn.alpinelinux.org/alpine/v3.15/releases/x86_64/alpine-virt-3.15.2-x86_64.iso
     
     ```
     
 - Create disk (note it won't actually take 4GB of space, more like 500MB)
     
     ```
-     qemu-img create -f qcow2 alpine.img 4G
+     qemu-img create -f qcow2 alpine.img 40G
     
     ```
     
@@ -56,7 +56,7 @@ Recommended to use SSH or external keyboard to execute the following commands un
 - Create an answerfile to speed up installation:
     
     ```
-    localhost:~# wget https://gist.githubusercontent.com/oofnikj/e79aef095cd08756f7f26ed244355d62/raw/answerfile
+    localhost:~# wget https://raw.githubusercontent.com/AntonnyR/docker-qemu-arm/main/answerfile
     
     ```
     
@@ -77,7 +77,7 @@ Recommended to use SSH or external keyboard to execute the following commands un
 - Once installation is complete, power off the VM (command `poweroff`) and boot again without cdrom:
     
     ```
-    qemu-system-x86_64 -machine q35 -m 1024 -smp cpus=2 -cpu qemu64 \
+    qemu-system-x86_64 -machine q35 -m 4024 -smp cpus=4 -cpu qemu64 \
       -drive if=pflash,format=raw,read-only,file=$PREFIX/share/qemu/edk2-x86_64-code.fd \
       -netdev user,id=n1,hostfwd=tcp::2222-:22 -device virtio-net,netdev=n1 \
       -nographic alpine.img
